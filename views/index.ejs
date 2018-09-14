@@ -1,0 +1,348 @@
+
+<% include header.ejs %>
+
+<div>
+
+
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">学生信息管理系统</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">学生管理</a></li>
+
+                    <li><a href="#">班级管理</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <a class="btn btn-success"  data-toggle="modal" data-target="#banjiModal"  >添加班级</a>
+
+        <a class="btn btn-success"  data-toggle="modal" data-target="#myModal2"> 添加学生 </a> <br><br>
+
+
+        <form action="/search" id="search">
+            <input type="search" name="stuname" placeholder="请输入要查询的学生">
+            <input type="submit" value="查询">
+        </form>
+    </div>
+
+
+    <br>
+    <main class="container">
+        <!--<%= students   %>-->
+
+        <table class="table table-striped">
+            <tr>
+                <td> 序号 </td>
+                <td> 姓名 </td>
+                <td> 年龄 </td>
+                <td> 性别 </td>
+                <td> 班级 </td>
+                <td> 操作 </td>
+            </tr>
+
+            <% for( var i = 0; i < students.length; i++ ){ %>
+            <tr>
+                <td> <%= i + 1 %> </td>
+                <td> <%= students[i].stuname %> </td>
+                <td> <%= students[i].age %> </td>
+
+                <% var sex = students[i].isMale ? '男' : '女' %>
+                <td> <%= sex %> </td>
+                <td> <%= students[i].banji.lesson + '-' + students[i].banji.name %> </td>
+                <td>
+                    <!--编辑-->
+                    <a  data-toggle="modal"  class="update" stuname=<%= students[i].stuname %> class="update">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>&nbsp;&nbsp;
+
+                    <!--删除-->
+                    <a  stuname=<%= students[i].stuname %> class="delete">
+
+                        <i class="glyphicon glyphicon-trash"></i>
+
+                    </a>
+                </td>
+            </tr>
+            <% } %>
+
+        </table>
+    </main>
+
+    <!-- 添加班级模态框 -->
+    <div class="modal fade" id="banjiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加新同学
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <form class="form-horizontal" role="form" id="banjiAdd">
+
+                        <div class="form-group">
+                            <label for="firstname" class="col-sm-2 control-label">班级</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" class="form-control" id="firstname" placeholder="请输入课程名称">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-2 control-label">授课老师</label>
+                            <div class="col-sm-10">
+                                <input type="text"  name="teacher" class="form-control" id="lastname" placeholder="授课老师的名称">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-2 control-label">课程</label>
+                            <div class="col-sm-10">
+                                <input type="text"  name="lesson" class="form-control" id="lastname" placeholder="请输入班级">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-2 control-label">位置</label>
+                            <div class="col-sm-10">
+                                <input type="text"  name="location" class="form-control" id="lastname" placeholder="位置">
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <!--form属性：其值是formID，决定按钮是属于那个表单的-->
+                    <button type="submit" form="banjiAdd" class="btn btn-primary">添加</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <!-- 添加学生模态框 -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加新同学
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <form class="form-horizontal" role="form" id="formAdd">
+
+                        <div class="form-group">
+                            <label for="firstname" class="col-sm-2 control-label">名字</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="stuname" class="form-control" id="firstname" placeholder="请输入名字">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-2 control-label">年龄</label>
+                            <div class="col-sm-10">
+                                <input type="number"  name="age" class="form-control" id="lastname" placeholder="请输年龄">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label  class="col-sm-2 control-label">性别</label>
+                            <div class="col-sm-10">
+                                <input  type="radio" name="isMale"  value="true" id="man" checked >
+                                <label for="man">男</label>
+
+                                <input  type="radio" name="isMale"  value="false" id="woman" >
+                                <label for="woman">女</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <lable for='banji' class="col-sm-2 control-label">班级</lable>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="banji" id="banji">
+
+                                    <option value=""> 请选择班级 </option>
+
+                                    <% for( var i = 0; i < banjis.length; i++ ){ %>
+                                    <option value=<%= banjis[i]._id %> >
+                                        <%= banjis[i].lesson + '-' + banjis[i].name %>
+                                    </option>
+
+                                    <% } %>
+
+                                </select>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <!--form属性：其值是formID，决定按钮是属于那个表单的-->
+                    <button type="submit" form="formAdd" class="btn btn-primary">添加</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+<!--提示模态框-->
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        提示信息
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!--修改模态框-->
+    <section>
+
+    </section>
+
+
+    <div class="container">
+
+        <ul class="pagination">
+
+            <li class=<%= page === 1 ? 'disabled' : '' %>>
+                <a href= <%= page ===1 ? 'javascript:void(0)' : ('/?page=' +(page -1)) %>
+                >&laquo;</a>
+            </li>
+
+           <% pages.forEach(function (pageList) { %>
+               <li class=<%=page == pageList ? 'active' : ''%>>
+                   <a href=<%= '/?page=' + pageList %>>
+                       <%= pageList %>
+                   </a>
+               </li>
+          <% }) %>
+<!--标签什么时候不可以点 即具有disabled类名-->
+            <li class=<%= page === pageTotal ? 'disabled' : '' %>>
+
+                <a href= <%= page === pageTotal ? 'javascript:void(0)' : ('/?page=' +(page +1)) %>
+
+                >&raquo;</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <script>
+        // 添加班级
+        $('#banjiAdd').submit(function (ev) {
+            ev.preventDefault();
+            $('#banjiModal').modal('hide');
+
+           
+            var data = $(this).serialize();
+
+            $.post('/banji/add',data, function(res){
+                if( res.error == 0){
+//                    显示模态框
+                    $('#myModal3 .modal-body').html(res.msg);
+                    $('#myModal3').modal('show');
+
+//                    当模态框显示之后再执行回调函数
+                    $('#myModal3').on('hide.bs.modal',function () {
+                        location.href='/'
+                    });
+                }else {
+                    alert(res.msg);
+                }
+            })
+        })
+
+
+
+        //删除学生
+        $('.delete').click(function(ev){
+            console.log('12345')
+            ev.preventDefault();
+            var stuname = $(this).attr('stuname');
+            $.cookie('stuname', stuname);
+
+            $.get('/student/delete/' + stuname, '', function(res){
+                if(res.error == 0){
+                    alert(res.msg);
+                    location.href = '/';
+                }else {
+                    alert(res.msg);
+                }
+            })
+        })
+//        添加学生信息
+        $('#formAdd').submit(function (ev) {
+//            关闭模态框
+            $('#myModal2').modal('hide');
+
+            ev.preventDefault();
+            var data = $(this).serialize();
+            $.post('/student/add',data, function(res){
+                if( res.error == 0){
+//                    显示模态框
+                    $('#myModal3 .modal-body').html(res.msg);
+                    $('#myModal3').modal('show');
+
+//                    当模态框显示之后再执行回调函数
+                    $('#myModal3').on('hide.bs.modal',function () {
+                        location.href='/'
+                    });
+                }else {
+                    alert(res.msg);
+                }
+            })
+        })
+//        显示某学生信息
+        $('.update').click(function () {
+            var stuname = $(this).attr('stuname');
+
+            $.get('/student/' +stuname,'',function (res) {
+
+                $('section').html(res);
+                $('#myModal4').modal('show');
+            })
+
+        })
+
+
+
+    </script>
+
+
+
+</div>
+
+<% include footer.ejs %>

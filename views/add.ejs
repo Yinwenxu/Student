@@ -1,0 +1,43 @@
+<% include header.ejs %>
+<div>
+
+    <form action="">
+        <input type="text" name="stuname" required placeholder="请输入姓名"> <br>
+        <input type="number" name="age" required placeholder="请输入年龄"> <br>
+
+        <input type="radio" name="isMale" value="true" checked> 男
+        <input type="radio" name="isMale" value="false"> 女
+
+        <br>
+        <select name="banji" required>
+            <option value=""> 请选择班级 </option>
+
+            <% for( var i = 0; i < banjis.length; i++ ){ %>
+            <option value=<%= banjis[i]._id %> >
+                <%= banjis[i].lesson + '-' + banjis[i].name %>
+            </option>
+
+            <% } %>
+        </select>
+        <br>
+        <input type="submit" value="添加">
+    </form>
+
+    <script>
+        $('form').submit(function(ev){
+            ev.preventDefault();
+            var data = $(this).serialize();
+            $.post('/student/add',data, function(res){
+                if( res.error == 0){
+                    alert(res.msg);
+                    location.href = '/';
+                }else {
+                    alert(res.msg);
+                }
+            })
+        })
+    </script>
+
+</div>
+
+<% include footer.ejs %>
